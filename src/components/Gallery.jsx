@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
+import { WaterRippleImage } from "@/components/ui/water-ripple-image";
 import { gsap, reduced } from "../lib/motion";
 import { GALLERY, GALLERY_FRAME } from "../constants";
 
@@ -15,11 +16,11 @@ const CENTRE_SCALE = 2.6;
 // `span` how much of the scroll it spends crossing. Shorter span, faster pass.
 // Left is the centre of the image, so values past the edges let it bleed off.
 const PASSES = [
-  { left: "24%", width: "clamp(11rem, 30vw, 25rem)", ratio: "aspect-4/3", lead: 0.06, span: 0.66 },
-  { left: "82%", width: "clamp(9rem, 24vw, 20rem)", ratio: "aspect-3/4", lead: 0.19, span: 0.8 },
-  { left: "46%", width: "clamp(8rem, 21vw, 17rem)", ratio: "aspect-square", lead: 0.31, span: 0.58 },
-  { left: "90%", width: "clamp(10rem, 27vw, 22rem)", ratio: "aspect-16/10", lead: 0.43, span: 0.72 },
-  { left: "13%", width: "clamp(12rem, 34vw, 28rem)", ratio: "aspect-4/5", lead: 0.54, span: 0.86 },
+  { left: "24%", width: "clamp(16rem, 46vw, 38rem)", ratio: "aspect-4/3", lead: 0.06, span: 0.66 },
+  { left: "82%", width: "clamp(14rem, 38vw, 31rem)", ratio: "aspect-3/4", lead: 0.19, span: 0.8 },
+  { left: "46%", width: "clamp(13rem, 34vw, 27rem)", ratio: "aspect-square", lead: 0.31, span: 0.58 },
+  { left: "90%", width: "clamp(15rem, 42vw, 34rem)", ratio: "aspect-16/10", lead: 0.43, span: 0.72 },
+  { left: "13%", width: "clamp(18rem, 52vw, 42rem)", ratio: "aspect-4/5", lead: 0.54, span: 0.86 },
 ];
 
 // The mosaic that stands in when motion is turned off — see below.
@@ -45,6 +46,23 @@ export default function Gallery() {
   useGSAP(
     () => {
       if (still) return;
+
+      // It arrives rather than appears: the same fade that ends the section,
+      // played over the last stretch of the approach before the stage sticks.
+      gsap.fromTo(
+        centre.current,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: track.current,
+            start: `top top+=${FADE_DISTANCE}`,
+            end: "top top",
+            scrub: 0.8,
+          },
+        }
+      );
 
       // The centre frame grows for the whole length of the collage.
       gsap.fromTo(
@@ -139,16 +157,19 @@ export default function Gallery() {
           <div className="absolute inset-0 grid place-items-center">
             <div
               ref={centre}
-              className="aspect-3/2 w-[clamp(15rem,42vw,38rem)] overflow-hidden"
+              className="w-[clamp(15rem,42vw,38rem)]"
               style={{ willChange: "transform" }}
             >
-              <img
+              <WaterRippleImage
                 src={GALLERY_FRAME.image}
                 alt={GALLERY_FRAME.alt}
-                decoding="async"
-                width="2400"
-                height="1600"
-                className="h-full w-full object-cover"
+                className="aspect-3/2 w-full"
+                renderScale={CENTRE_SCALE}
+                blueish={0.12}
+                scale={3.2}
+                illumination={0.08}
+                surfaceDistortion={0.009}
+                waterDistortion={0.016}
               />
             </div>
           </div>
