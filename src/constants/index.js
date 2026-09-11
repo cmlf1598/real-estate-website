@@ -114,11 +114,16 @@ export const COAST = {
   ],
 };
 
+// The image at the centre of the gallery. Everything else passes over it.
+export const GALLERY_FRAME = {
+  image: "/images/water.jpg",
+  alt: "Last gold light breaking up on black water",
+};
+
 export const GALLERY = [
   { image: "/images/blue-hour.jpg", alt: "The house lit from within, above the Southern Ocean at blue hour" },
   { image: "/images/cliff-pale.jpg", alt: "Limestone cliffs under a pale lavender sky" },
   { image: "/images/window.jpg", alt: "A dark-framed window onto green water" },
-  { image: "/images/water.jpg", alt: "Last gold light breaking up on black water" },
   { image: "/images/daybed.jpg", alt: "A daybed below a long window onto the sea" },
   { image: "/images/horizon.jpg", alt: "The sun on the horizon beside a cliff silhouette" },
 ];

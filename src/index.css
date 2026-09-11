@@ -36,7 +36,9 @@ body {
     color: var(--color-salt);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    /* clip, not hidden: hidden makes body a scroll container, which
+       breaks position: sticky in the gallery frame. */
+    overflow-x: clip;
 }
 
 /* The page runs edge to edge. */
