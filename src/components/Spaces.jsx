@@ -1,82 +1,79 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "../lib/motion";
+import { LayoutGrid } from "@/components/ui/layout-grid";
+import { gsap, reduced, reveal, EASE } from "../lib/motion";
 import { SPACES } from "../constants";
+
+// Five rooms across three columns: two mixed rows, then a wide one to close.
+const SPANS = [
+  "md:col-span-2",
+  "md:col-span-1",
+  "md:col-span-1",
+  "md:col-span-2",
+  "md:col-span-3",
+];
+
+const RoomCard = ({ name, note }) => (
+  <div>
+    <h3 className="font-display text-[1.7rem] font-light text-salt md:text-[2.2rem]">
+      {name}
+    </h3>
+    <p className="mt-3 max-w-lg text-[0.95rem] leading-relaxed text-salt/75">
+      {note}
+    </p>
+  </div>
+);
+
+const cards = SPACES.map((s, i) => ({
+  id: s.name,
+  content: <RoomCard name={s.name} note={s.note} />,
+  className: SPANS[i % SPANS.length],
+  thumbnail: s.image,
+  alt: s.alt,
+  title: s.name,
+}));
 
 export default function Spaces() {
   const root = useRef(null);
-  const track = useRef(null);
 
   useGSAP(
     () => {
-      const mm = gsap.matchMedia();
+      if (reduced()) {
+        gsap.set(".will-reveal, .fade-reveal", { opacity: 1, y: 0 });
+        return;
+      }
 
-      // Pinned horizontal travel on pointer-sized screens only. Narrow screens
-      // get an ordinary swipe, which is what a thumb expects anyway.
-      mm.add(
-        "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          const distance = () =>
-            track.current.scrollWidth - track.current.parentElement.clientWidth;
+      reveal(gsap.utils.toArray(".will-reveal", root.current), {
+        trigger: root.current,
+      });
 
-          gsap.to(track.current, {
-            x: () => -distance(),
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: () => "+=" + distance(),
-              pin: true,
-              scrub: 1,
-              invalidateOnRefresh: true,
-              anticipatePin: 1,
-            },
-          });
-        }
-      );
-
-      return () => mm.revert();
+      // The grid fades without moving — see .fade-reveal in index.css.
+      gsap.to(".fade-reveal", {
+        opacity: 1,
+        duration: 1.4,
+        ease: EASE,
+        scrollTrigger: { trigger: root.current, start: "top 78%", once: true },
+      });
     },
     { scope: root }
   );
 
   return (
-    <section id="spaces" ref={root} className="relative py-20 md:py-0">
-      <div className="flex items-baseline justify-between px-5 pb-8 md:px-12 md:pt-24 md:pb-10">
-        <h2 className="display-md text-salt">The rooms</h2>
-        <span className="text-[0.72rem] tracking-[0.2em] text-salt/40 uppercase">
+    <section id="spaces" ref={root} className="relative px-5 py-20 md:px-12 md:py-28">
+      <div className="flex items-baseline justify-between pb-8 md:pb-12">
+        <h2 className="display-md will-reveal text-salt">The rooms</h2>
+        <span className="will-reveal text-[0.72rem] tracking-[0.2em] text-salt/40 uppercase">
           {SPACES.length} spaces
         </span>
       </div>
 
-      <div className="snap-x snap-mandatory overflow-x-auto px-5 pb-6 md:overflow-hidden md:px-12 md:pb-24 [&::-webkit-scrollbar]:hidden">
-        <div ref={track} className="flex gap-5 md:gap-8">
-          {SPACES.map((s) => (
-            <article
-              key={s.name}
-              className="w-[80vw] shrink-0 snap-start sm:w-[62vw] md:w-[46vw] lg:w-[38vw]"
-            >
-              <div className="aspect-4/5 overflow-hidden md:aspect-auto md:h-[54svh]">
-                <img
-                  src={s.image}
-                  alt={s.alt}
-                  loading="lazy"
-                  decoding="async"
-                  width="1400"
-                  height="1867"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <h3 className="mt-6 font-display text-[1.6rem] font-light text-salt md:text-[1.9rem]">
-                {s.name}
-              </h3>
-              <p className="mt-3 max-w-[30rem] text-[0.92rem] leading-relaxed text-salt/72">
-                {s.note}
-              </p>
-            </article>
-          ))}
-        </div>
+      <div className="fade-reveal">
+        <LayoutGrid cards={cards} />
       </div>
+
+      <p className="mt-6 text-[0.8rem] text-salt/40">
+        Open a room to read about it.
+      </p>
     </section>
   );
 }

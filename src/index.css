@@ -120,3 +120,71 @@ img {
 .js-motion .will-reveal {
     opacity: 0;
 }
+
+/* Same idea, but faded only. Applying a transform here would make this element
+   the containing block for any position: fixed descendant. */
+.fade-reveal {
+    opacity: 1;
+}
+
+.js-motion .fade-reveal {
+    opacity: 0;
+}
+
+/* Hover affordance for the room cards. On touch, where there is no hover to
+   give, the name and veil simply stay visible. */
+.card-image {
+    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-veil {
+    opacity: 1;
+    transition: opacity 450ms ease;
+}
+
+.card-veil-label {
+    transform: translateY(0);
+    transition: transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+    .card-veil {
+        opacity: 0;
+    }
+
+    .card-veil-label {
+        transform: translateY(0.6rem);
+    }
+
+    .card-trigger:hover .card-image,
+    .card-trigger:focus-visible .card-image {
+        transform: scale(1.045);
+    }
+
+    .card-trigger:hover .card-veil,
+    .card-trigger:focus-visible .card-veil {
+        opacity: 1;
+    }
+
+    .card-trigger:hover .card-veil-label,
+    .card-trigger:focus-visible .card-veil-label {
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card-image,
+    .card-veil,
+    .card-veil-label {
+        transition: none;
+    }
+
+    .card-trigger:hover .card-image,
+    .card-trigger:focus-visible .card-image {
+        transform: none;
+    }
+
+    .card-veil-label {
+        transform: none;
+    }
+}

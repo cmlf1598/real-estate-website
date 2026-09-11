@@ -57,6 +57,31 @@ Three things were added because the component takes over the scroll wheel:
 - **`onExpanded`** fires when expansion finishes, so `Hero.jsx` can call
   `ScrollTrigger.refresh()` — the intro copy appearing moves every trigger below it.
 
+### The rooms grid
+
+`src/components/ui/layout-grid.tsx` is the Aceternity LayoutGrid, ported the same way
+(no `next/image`, project tokens instead of the white/neutral palette, sharp corners).
+The five rooms span a three-column grid as 2+1 / 1+2 / 3, so none is dropped.
+
+Two deviations worth knowing:
+
+- The expanded card is `position: fixed`, not absolute. The grid is taller than the
+  viewport, so centring inside it put the card off screen on small viewports.
+- Because of that, **no ancestor of the grid may carry a transform** — a transformed
+  ancestor becomes the containing block for fixed children and breaks the centring.
+  That is why the grid uses the opacity-only `.fade-reveal` hook rather than the
+  usual `.will-reveal`, which animates `y`.
+
+Cards are real `<button>`s with `aria-expanded`; Escape closes an open card, and so
+does pressing it again.
+
+The hover affordance lives in `index.css` (`.card-trigger` / `.card-image` /
+`.card-veil`): the photograph scales very slightly, a gradient rises, and the room
+name and an "Open" label fade in. It is keyed on `@media (hover: hover)`, so touch
+devices — which have no hover to give — show the names permanently instead. Focus
+gets the same treatment as hover, and `prefers-reduced-motion` keeps the labels but
+drops the scale.
+
 ## Design notes
 
 - Palette and type tokens are declared in the `@theme` block of `src/index.css`.
