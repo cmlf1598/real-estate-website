@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&family=Schibsted+Grotesk:wght@400;500&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+    /* Blue hour on the Southern Ocean. Warmth only ever from inside the house. */
+    --color-ground: #2c3f4c;
+    --color-deep: #0e1f27;
+    --color-abyss: #081419;
+    --color-dusk: #4a5a68;
+    --color-haze: #b9afa6;
+    --color-lamp: #c98f5a;
+    --color-salt: #f2f0ea;
+
+    --font-display: "Newsreader", ui-serif, Georgia, serif;
+    --font-sans: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+    --inset: 0px;
+    --rule: color-mix(in srgb, var(--color-salt) 18%, transparent);
+}
+
+@media (min-width: 768px) {
+    :root {
+        --inset: 14px;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+    background-color: var(--color-ground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+body {
+    margin: 0;
+    background-color: var(--color-ground);
+    color: var(--color-salt);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+/* The frame: the page floats inset on the slate ground, like a print in a mount. */
+#frame {
+    margin: var(--inset);
+    background-color: var(--color-deep);
+    position: relative;
+}
+
+::selection {
+    background: var(--color-lamp);
+    color: var(--color-abyss);
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-lamp);
+    outline-offset: 3px;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+@utility wordmark {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.42em;
+    font-size: 0.7rem;
+    font-weight: 400;
+}
+
+@utility hairline {
+    background-color: var(--rule);
+}
+
+/* Body copy sits near 68 characters, generously leaded. */
+@utility prose-cliff {
+    max-width: 34rem;
+    font-size: clamp(0.98rem, 0.9rem + 0.3vw, 1.1rem);
+    line-height: 1.75;
+    color: color-mix(in srgb, var(--color-salt) 78%, transparent);
+}
+
+@utility display-xl {
+    font-family: var(--font-display);
+    font-weight: 200;
+    font-size: clamp(2.6rem, 1.2rem + 5.4vw, 6.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+}
+
+@utility display-lg {
+    font-family: var(--font-display);
+    font-weight: 200;
+    font-size: clamp(2rem, 1.1rem + 3.4vw, 4rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+}
+
+@utility display-md {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(1.5rem, 1rem + 1.8vw, 2.4rem);
+    line-height: 1.15;
+}
+
+/* Reveal primitives — GSAP drives these; they are visible by default so the
+   page reads correctly if JavaScript or motion is unavailable. */
+.will-reveal {
+    opacity: 1;
+}
+
+.js-motion .will-reveal {
+    opacity: 0;
+}
