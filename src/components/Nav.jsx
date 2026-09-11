@@ -36,8 +36,7 @@ export default function Nav() {
   return (
     <header
       ref={ref}
-      className="fixed z-50 flex items-center justify-between px-5 py-4 md:px-8"
-      style={{ top: "var(--inset)", left: "var(--inset)", right: "var(--inset)" }}
+      className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-4 md:px-8"
     >
       <nav className="hidden flex-1 gap-7 text-[0.82rem] text-salt/70 md:flex">
         {LINKS.map((l) => (

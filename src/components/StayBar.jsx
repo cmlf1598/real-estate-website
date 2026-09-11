@@ -59,8 +59,7 @@ export default function StayBar() {
     <aside
       ref={ref}
       aria-label="Booking summary"
-      className="fixed z-40"
-      style={{ bottom: "var(--inset)", left: "var(--inset)", right: "var(--inset)" }}
+      className="fixed inset-x-0 bottom-0 z-40"
     >
       <div className="flex items-stretch border-t border-salt/15 bg-abyss/80 backdrop-blur-xl">
         {/* Full detail where there is room for it. */}

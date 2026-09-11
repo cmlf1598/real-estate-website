@@ -26,10 +26,19 @@ export const STAY_FACTS = [
 ];
 
 export const HERO = {
-  image: "/images/hero.jpg",
-  alt: "The house lit from within, standing above the Southern Ocean at blue hour",
-  headline: ["Nothing between you", "and the Southern Ocean"],
+  // The surf holds the opening frame; the long room is what it opens onto.
+  background: "/images/surf.jpg",
+  backgroundAlt: "Dark rock in white water below the cliffs at dusk",
+  media: "/images/long-room.jpg",
+  mediaAlt: "The long room wrapped in glass, facing the ocean at dusk",
+  title: "The Cliffs",
   meta: "Port Campbell · Victoria · Sleeps 8",
+  scrollCue: "Scroll to open",
+  headline: "Nothing between you and the Southern Ocean",
+  intro: [
+    "A four-bedroom house on the cliff edge, sixty metres back from a drop into the Southern Ocean, with twelve metres of glass facing south.",
+    "No other building in sight. Two nights minimum, and most people wish they had booked three.",
+  ],
 };
 
 export const ARRIVAL = {
@@ -43,8 +52,6 @@ export const ARRIVAL = {
 };
 
 export const HOUSE = {
-  image: "/images/house-dusk.jpg",
-  alt: "The house in silhouette against a burning dusk sky, lit from within",
   heading: "Built for weather",
   body: [
     "Blackened timber, board-formed concrete and a low zinc roof pitched into the prevailing southerly. Inside, oak floors, wool, and twelve metres of glass that disappears into the wall when the wind drops.",
@@ -108,7 +115,7 @@ export const COAST = {
 };
 
 export const GALLERY = [
-  { image: "/images/surf.jpg", alt: "Dark rock in white water below the cliffs at dusk" },
+  { image: "/images/blue-hour.jpg", alt: "The house lit from within, above the Southern Ocean at blue hour" },
   { image: "/images/cliff-pale.jpg", alt: "Limestone cliffs under a pale lavender sky" },
   { image: "/images/window.jpg", alt: "A dark-framed window onto green water" },
   { image: "/images/water.jpg", alt: "Last gold light breaking up on black water" },

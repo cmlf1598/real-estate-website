@@ -25,11 +25,43 @@ read from it and hold no content of their own.
   placeholder imagery, chosen for golden and blue hour — keep that light when
   swapping, since the palette is built around it.
 
+## Project structure
+
+This is **Vite + React 19 + Tailwind v4**, not Next.js. TypeScript is configured
+(`tsconfig.json`) and `@/*` resolves to `src/*` in both Vite and tsc, so components
+authored for a shadcn layout drop in unchanged.
+
+Reusable, presentational components live in `src/components/ui/` — the shadcn
+convention. Keeping that folder separate matters because `shadcn` CLI writes there
+by default, so anything you add later lands beside the existing pieces instead of
+mixing with the page sections in `src/components/`.
+
+To adopt shadcn properly later: `npx shadcn@latest init`. It will ask for a global
+CSS file and a Tailwind config — point it at `src/index.css` and review the diff
+before accepting, since this project uses Tailwind v4 `@theme` tokens rather than a
+`tailwind.config.js`.
+
+### The hero
+
+`src/components/ui/scroll-expansion-hero.tsx` holds the media that expands as you
+scroll. It came from a Next.js source and was ported: `next/image` became plain
+`<img>` (installing Next into a Vite app would break the build, not fix it), and the
+hardcoded blue palette became this project's tokens.
+
+Three things were added because the component takes over the scroll wheel:
+
+- **Reduced motion** renders it expanded immediately and never hijacks scroll.
+- **Keyboard** — arrows, Page Down, Space and End advance the expansion, and focus
+  landing past the hero releases it. Without this the page pins at scroll 0 and a
+  keyboard user can never get past it.
+- **`onExpanded`** fires when expansion finishes, so `Hero.jsx` can call
+  `ScrollTrigger.refresh()` — the intro copy appearing moves every trigger below it.
+
 ## Design notes
 
 - Palette and type tokens are declared in the `@theme` block of `src/index.css`.
   Newsreader (light) for display, Schibsted Grotesk for everything else.
-- The page floats inset on a slate ground (`#frame`). The inset collapses below 768px.
+- The page runs edge to edge; `#frame` is a plain full-bleed wrapper.
 - Motion is GSAP ScrollTrigger via `@gsap/react`. `src/lib/motion.js` holds the
   shared reveal and the `reduced()` guard; every component checks it and falls back
   to a static, fully readable page under `prefers-reduced-motion`.

@@ -4,7 +4,6 @@
 
 @theme {
     /* Blue hour on the Southern Ocean. Warmth only ever from inside the house. */
-    --color-ground: #2c3f4c;
     --color-deep: #0e1f27;
     --color-abyss: #081419;
     --color-dusk: #4a5a68;
@@ -17,19 +16,12 @@
 }
 
 :root {
-    --inset: 0px;
     --rule: color-mix(in srgb, var(--color-salt) 18%, transparent);
-}
-
-@media (min-width: 768px) {
-    :root {
-        --inset: 14px;
-    }
 }
 
 html {
     scroll-behavior: smooth;
-    background-color: var(--color-ground);
+    background-color: var(--color-deep);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -40,18 +32,17 @@ html {
 
 body {
     margin: 0;
-    background-color: var(--color-ground);
+    background-color: var(--color-deep);
     color: var(--color-salt);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
 }
 
-/* The frame: the page floats inset on the slate ground, like a print in a mount. */
+/* The page runs edge to edge. */
 #frame {
-    margin: var(--inset);
-    background-color: var(--color-deep);
     position: relative;
+    background-color: var(--color-deep);
 }
 
 ::selection {
@@ -95,6 +86,14 @@ img {
     font-size: clamp(2.6rem, 1.2rem + 5.4vw, 6.5rem);
     line-height: 1.02;
     letter-spacing: -0.015em;
+}
+
+@utility display-hero {
+    font-family: var(--font-display);
+    font-weight: 200;
+    font-size: clamp(3.2rem, 1rem + 11vw, 10rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
 }
 
 @utility display-lg {
